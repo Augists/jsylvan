@@ -1,4 +1,12 @@
-target
-src/main/c/sylvan-java/src/jsylvan_JSylvan.h
-src/main/c/sylvan-java/src/jsylvan_MCFile.h
-src/main/resources
+# Maven/Native build outputs
+/target/
+/src/main/resources/linux-x64/
+/src/main/resources/darwin-x64/
+
+# CMake builds for JNI layer
+/src/main/c/sylvan-java/build/
+/src/main/c/sylvan-java/target/
+
+# IDE caches
+/.idea/
+/.vscode/

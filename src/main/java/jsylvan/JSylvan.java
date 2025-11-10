@@ -287,6 +287,11 @@ public class JSylvan
     public static native long getTableSize();
 
     /**
+     * Get the total number of nodes created since initialization.
+     */
+    public static native long getNodesCreated();
+
+    /**
      * Calculate number of variable assignments for which the BDD evaluation yields true
      * Parameters: the bdd, and a bdd representing the variables
      */

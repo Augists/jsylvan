@@ -50,13 +50,16 @@ mkdir -p build
 pushd build
 
 cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release \
-    -DCMAKE_POSITION_INDEPENDENT_CODE=ON ../../sylvan
+    -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DSYLVAN_STATS=ON \
+    -DCMAKE_POLICY_VERSION=3.5 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+    -DCMAKE_C_FLAGS="-Wno-error=array-parameter -Wno-error=calloc-transposed-args" ../../sylvan
 make sylvan
 SYLVAN_BUILD_ROOT="$(pwd)"
 
 popd
 
 cmake -DUSE_NATIVE_JNI=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_POLICY_VERSION=3.5 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
     "-DSYLVAN_SRC_ROOT=$SYLVAN_SRC_ROOT" "-DSYLVAN_BUILD_ROOT=$SYLVAN_BUILD_ROOT" \
     ../../src/main/c/sylvan-java
 make sylvan-java

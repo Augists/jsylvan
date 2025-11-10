@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <jni.h>
 #include <sylvan.h>
+#include <sylvan_stats.h>
 #include <lace.h>
 
 JNIEXPORT jlong JNICALL
@@ -295,6 +296,17 @@ Java_jsylvan_Jsylvan_getTableSize(JNIEnv *env, jclass cl)
     size_t res;
     sylvan_table_usage(NULL, &res);
     return (long)res;
+    (void)env;
+    (void)cl;
+}
+
+JNIEXPORT jlong JNICALL
+Java_jsylvan_JSylvan_getNodesCreated(JNIEnv *env, jclass cl)
+{
+    LACE_ME;
+    sylvan_stats_t snapshot;
+    sylvan_stats_snapshot(&snapshot);
+    return (jlong)snapshot.counters[BDD_NODES_CREATED];
     (void)env;
     (void)cl;
 }

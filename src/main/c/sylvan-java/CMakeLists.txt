@@ -12,7 +12,11 @@ include(CMakeDependentOption)
 set(LIBRARY_OUTPUT_PATH lib)
 set(SYLVAN_SOVERSION 1)
 
-include_directories(${SYLVAN_SRC_ROOT}/src/sylvan/include)
+if(EXISTS "${SYLVAN_SRC_ROOT}/src/sylvan/include")
+    include_directories(${SYLVAN_SRC_ROOT}/src/sylvan/include)
+else()
+    include_directories(${SYLVAN_SRC_ROOT}/src)
+endif()
 
 if(USE_NATIVE_JNI)
     find_package(JNI REQUIRED)

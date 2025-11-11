@@ -49,10 +49,30 @@ pushd sylvan-java-build
 mkdir -p build
 pushd build
 
+supports_flag() {
+    echo 'int main(void){return 0;}' | ${CC:-cc} "$1" -xc - -o /dev/null >/dev/null 2>&1
+}
+
+EXTRA_C_FLAGS=""
+if supports_flag "-Wno-error=array-parameter"; then
+    EXTRA_C_FLAGS="$EXTRA_C_FLAGS -Wno-error=array-parameter"
+fi
+# GCC < 13 does not know about calloc-transposed-args
+if supports_flag "-Wno-error=calloc-transposed-args"; then
+    EXTRA_C_FLAGS="$EXTRA_C_FLAGS -Wno-error=calloc-transposed-args"
+fi
+
+if [ -n "$EXTRA_C_FLAGS" ]; then
+    CMAKE_C_FLAGS_ARG=("-DCMAKE_C_FLAGS=$EXTRA_C_FLAGS")
+else
+    CMAKE_C_FLAGS_ARG=()
+fi
+
 cmake -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DSYLVAN_STATS=ON \
+    -DSYLVAN_GMP=OFF -DENABLE_GMP=OFF \
     -DCMAKE_POLICY_VERSION=3.5 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-    -DCMAKE_C_FLAGS="-Wno-error=array-parameter -Wno-error=calloc-transposed-args" ../../sylvan
+    "${CMAKE_C_FLAGS_ARG[@]}" ../../sylvan
 make sylvan
 SYLVAN_BUILD_ROOT="$(pwd)"
 
